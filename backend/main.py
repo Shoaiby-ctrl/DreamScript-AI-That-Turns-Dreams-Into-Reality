@@ -17,26 +17,35 @@ genai.configure(api_key=api_key)
 
 app = FastAPI()
 
-# Enable CORS
+# ✅ CORS Configuration
+# Change the second URL after you deploy frontend on Vercel
+origins = [
+    "http://localhost:3000",             # Local frontend (React/Next.js dev)
+    "https://YOUR-VERCEL-APP.vercel.app" # Replace with actual Vercel domain
+]
+
 app.add_middleware(
     CORSMiddleware,
-    allow_origins=["*"],
+    allow_origins=origins,
     allow_credentials=True,
     allow_methods=["*"],
     allow_headers=["*"],
 )
 
-# Path to frontend folder (adjust if needed)
+# --- Serve Frontend (optional, if needed) ---
 frontend_path = os.path.join(os.path.dirname(__file__), "..", "frontend")
 frontend_path = os.path.abspath(frontend_path)
 
-# Mount the whole frontend folder as /static
+# Serve static files from frontend
 app.mount("/static", StaticFiles(directory=frontend_path), name="static")
 
 @app.get("/")
 async def serve_frontend():
-    return FileResponse(os.path.join(frontend_path, "index.html"))
-
+    """Serves the frontend index.html if available"""
+    index_file = os.path.join(frontend_path, "index.html")
+    if os.path.exists(index_file):
+        return FileResponse(index_file)
+    return {"message": "Frontend not found. Did you build it?"}
 
 # --- API endpoint ---
 from pydantic import BaseModel
@@ -47,7 +56,7 @@ class DreamRequest(BaseModel):
 
 @app.post("/generate")
 async def generate(request: DreamRequest):
-    # Use Gemini
+    """Generates dream content using Gemini API"""
     prompt = f"Dream: {request.dream}\nConstraints: {request.constraints or 'None'}"
     model = genai.GenerativeModel("gemini-1.5-flash")
     response = model.generate_content(prompt)
