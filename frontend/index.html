@@ -1,0 +1,32 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>DreamScript AI</title>
+  <link rel="stylesheet" href="/static/styles.css">
+
+
+</head>
+<body>
+  <div class="container">
+    <h1>🌙 DreamScript AI</h1>
+    <form id="dreamForm">
+      <label for="dream">Enter your dream:</label>
+      <textarea id="dream" name="dream" rows="4" required></textarea>
+
+      <label for="constraints">Constraints (optional):</label>
+      <input type="text" id="constraints" name="constraints" placeholder="e.g., Make it a fantasy story">
+
+      <button type="submit">Generate Script</button>
+    </form>
+
+    <div id="result">
+      <h2>Generated Script</h2>
+      <pre id="output"></pre>
+    </div>
+  </div>
+
+  <script src="/static/app.js" defer></script>
+</body>
+</html>
