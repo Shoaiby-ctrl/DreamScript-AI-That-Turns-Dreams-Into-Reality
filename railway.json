@@ -1,10 +1,8 @@
 {
-  "build": {
-    "builder": "python",
-    "buildCommand": "pip install -r backend/requirements.txt"
-  },
+  "$schema": "https://railway.com/railway.schema.json",
+  "build": { "builder": "nixpacks" },
   "deploy": {
-    "startCommand": "uvicorn main:app --host 0.0.0.0 --port $PORT",
-    "rootDirectory": "backend"
+    "rootDirectory": "backend",
+    "startCommand": "uvicorn main:app --host 0.0.0.0 --port $PORT"
   }
 }
